@@ -156,7 +156,7 @@ def createEntry(filePath, isBlock, isHat, jsonModelPath):
             write_file.write('\n' + "    behaviours:")
             write_file.write('\n' + "      hat: true")
 
-        if isBlock=="blocks":
+        if isBlock=="block":
             write_file.write('\n' + "    specific_properties:")
             write_file.write('\n' + "      block:")
             write_file.write('\n' + "        placed_model:")

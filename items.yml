@@ -1,29 +1,34 @@
 
-  dinosaur: 
-    display_name: display-name-dinosaur
+  fandango: 
+    display_name: display-name-fandango
+    lore:
+    - 'lore-1-fandango'
+    - 'lore-2-fandango'
+    - 'lore-3-fandango'
+    - 'lore-4-fandango'
+    - 'lore-5-fandango'
     permission: animecraft
     resource:
       material: PAPER
       generate: false
-      model_path: item\hats\bow.json
-test
-  trampoline: 
-    display_name: display-name-trampoline
+      model_path: block\bow.json
+    specific_properties:
+      block:
+        placed_model:
+          type: REAL_NOTE
+          break_particles_material: PRISMARINE_BRICKS
+  torchy: 
+    display_name: display-name-torchy
     lore:
-  harry: 
-    display_name: display-name-harry
-    lore:
-  iii: 
-    display_name: display-name-iii
-    lore:
-    - 'lore-1-iii'
-    - 'lore-2-iii'
-    - 'lore-3-iii'
-    - 'lore-4-iii'
-    - 'lore-5-iii'
+    - 'lore-1-torchy'
+    - 'lore-2-torchy'
+    - 'lore-3-torchy'
+    - 'lore-4-torchy'
+    - 'lore-5-torchy'
     permission: animecraft
     resource:
       material: PAPER
       generate: false
-      model_path: item\hats\bow.json
-    generate: false
+      model_path: item\hats\torch.json
+    behaviours:
+      hat: true
