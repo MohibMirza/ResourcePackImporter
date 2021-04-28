@@ -150,6 +150,7 @@ for i in range(len(texturePaths)):
         print("Sucessfully grabbed " + texture)
     else:
         print("ERROR: CANNOT FIND TEXTURE " + texture + " FROM ORIGINAL FILES!")
+        
 
     texture+=".mcmeta"
 
