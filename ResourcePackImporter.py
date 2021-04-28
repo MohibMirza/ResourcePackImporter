@@ -2,6 +2,7 @@
 import os
 import json
 import sys
+import glob
 from shutil import copy
 
 def isEven(x):
@@ -96,10 +97,11 @@ def parseJSON(filePath):
         file.close()
         return textureKeys, texturePaths, modelData
 
-def repath(directory, paths):
-    for i in len(paths):
-        basename = os.path.basename(paths[i])
-        paths[i] = directory + basename
+def findModel(file):
+    fileSearch = "models/**/" + file
+    for fname in glob.glob(fileSearch, recursive=True):
+        return fname
+
 
 
 namespace = "animecraft"
@@ -145,6 +147,7 @@ for i in range(len(texturePaths)):
 
     if(os.path.exists(texture)):
         copy(texture, texturesDirectory)
+        print("Sucessfully grabbed " + texture)
     else:
         print("ERROR: CANNOT FIND TEXTURE " + texture + " FROM ORIGINAL FILES!")
 
@@ -152,6 +155,7 @@ for i in range(len(texturePaths)):
 
     if(os.path.exists(texture)):
         copy(texture, texturesDirectory)
+        print("Sucessfully grabbed " + texture)
 
     texturePaths[i] = os.path.join(typePath, textureBasename)
     print(i, ": " +  texturePaths[i])
@@ -169,7 +173,7 @@ with open(model_dump, "w") as write_file:
 print(os.listdir(texturesDirectory))
 
 
-
+print(findModel(modelFile))
 
 # with open('text.txt', 'r') as f:
 #    f_contents = f.readlines()
