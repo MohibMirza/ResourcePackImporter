@@ -139,26 +139,54 @@ def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_sh
         json.dump(modelData, write_file)
         print("Successfully saved " + jsonFilePath)
 
-def createEntry(filePath, isBlock, isHat):
+def createEntry(filePath, isBlock, isHat, jsonModelPath):
     with open(filePath, "a") as write_file:
         name = input("What would you like to name this item?")
         write_file.write('\n' + "  " + name + ": ")
-        write_file.write('\n' + "  display_name: display-name-" + name)
-        write_file.write('\n' + "  permission: animecraft")
-        write_file.write('\n' + "  resource:")
-        write_file.write('\n' + "  material: PAPER")
-        write_file.write('\n' + "  generate: false")
-        write_file.write('\n' + "  model_path: false")
-        if isBlock=="block":
-            print()
+        write_file.write('\n' + "    display_name: display-name-" + name)
+        write_file.write('\n' + "    lore:")
+        for i in range(5):
+            write_file.write('\n' + "    - 'lore-" + str(i+1) + "-" + name + "'")
+        write_file.write('\n' + "    permission: animecraft")
+        write_file.write('\n' + "    resource:")
+        write_file.write('\n' + "      material: PAPER")
+        write_file.write('\n' + "      generate: false")
+        write_file.write('\n' + "      model_path: " + jsonModelPath)
+        if isHat=="hats":
+            write_file.write('\n' + "    behaviours:")
+            write_file.write('\n' + "      hat: true")
+
+        if isBlock=="blocks":
+            write_file.write('\n' + "    specific_properties:")
+            write_file.write('\n' + "      block:")
+            write_file.write('\n' + "        placed_model:")
+            write_file.write('\n' + "          type: REAL_NOTE")
+            write_file.write('\n' + "          break_particles_material: PRISMARINE_BRICKS")
+
+def splitall(path): # https://www.oreilly.com/library/view/python-cookbook/0596001673/ch04s16.html
+    allparts = []
+    while 1:
+        parts = os.path.split(path)
+        if parts[0] == path:  # sentinel for absolute paths
+            allparts.insert(0, parts[0])
+            break
+        elif parts[1] == path: # sentinel for relative paths
+            allparts.insert(0, parts[1])
+            break
         else:
-            print()
+            path = parts[0]
+            allparts.insert(0, parts[1])
 
-def splitModelPath(modelPath):
-    
-    return ""
-    
+    collect = False
+    finalPath = ""
+    for i in range(len(allparts)):
+        if allparts[i]=="item" or allparts[i]=="block":
+            collect = True
+        
+        if collect:
+            finalPath = os.path.join(finalPath, allparts[i])
 
+    return finalPath
 
 namespace = "animecraft"
 init(namespace)
@@ -182,7 +210,9 @@ while running:
     textureDir = os.path.join(namespace, "textures", pasteTextureLoc)
     copyTextures(texturePaths, textureDir, textureKeys, modelData, pasteTextureLoc, os.path.basename(modelPath))
 
-    createEntry("items.yml", isBlock, isHat)
+    jsonModelPath = splitall(pasteJSONLoc)
+
+    createEntry("items.yml", isBlock, isHat, jsonModelPath)
 
     
 

@@ -1,0 +1,29 @@
+
+  dinosaur: 
+    display_name: display-name-dinosaur
+    permission: animecraft
+    resource:
+      material: PAPER
+      generate: false
+      model_path: item\hats\bow.json
+test
+  trampoline: 
+    display_name: display-name-trampoline
+    lore:
+  harry: 
+    display_name: display-name-harry
+    lore:
+  iii: 
+    display_name: display-name-iii
+    lore:
+    - 'lore-1-iii'
+    - 'lore-2-iii'
+    - 'lore-3-iii'
+    - 'lore-4-iii'
+    - 'lore-5-iii'
+    permission: animecraft
+    resource:
+      material: PAPER
+      generate: false
+      model_path: item\hats\bow.json
+    generate: false
