@@ -57,6 +57,9 @@ def init(namespace):
     if not os.path.exists(modelsHandheldPath):
         os.mkdir(modelsHandheldPath)
 
+    if not os.path.exists("items.yml"):
+        open('items.yml', 'a').close()
+
 def parseJSON(filePath):
     with open(filePath, "r") as file:
         modelData = json.loads(file.read()) # DICT
@@ -94,7 +97,7 @@ def grabInput(namespace):
     jsonFile = input("Enter model's json file: ")
     modelPath = findModelPath(jsonFile)
     if modelPath=="None":
-        return False, "", "", ""
+        return False, "", "", "", "", ""
     
     block = input("Is " + jsonFile + " a block or item model? \n0 for item\n1 for block\n")
     isBlock = "block" if block=="1" else "item"
@@ -109,7 +112,7 @@ def grabInput(namespace):
 
     pasteTextureLoc = os.path.join(isBlock, isHat)
     pasteJSONLoc = os.path.join(namespace, "models", isBlock, isHat, jsonFile)
-    return True, modelPath, pasteJSONLoc, pasteTextureLoc
+    return True, modelPath, pasteJSONLoc, pasteTextureLoc, isBlock, isHat
     
 def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_short, jsonFileName):
     for i in range(len(texturePaths)):
@@ -119,6 +122,7 @@ def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_sh
 
         if(os.path.exists(temp)):
             copy(temp, textureDir)
+            modelData["textures"][textureKeys[i]] = os.path.join(textureDir_short, itemName).replace("\\", "/")
             print("Sucessfully copied " + temp)
         else:
             print("ERROR: CANNOT FIND TEXTURE " + temp + " FROM ORIGINAL FILES!")
@@ -128,14 +132,31 @@ def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_sh
         if(os.path.exists(temp)):
             copy(temp, textureDir)
             print("Successfully copied " + temp)
-
-        modelData["textures"][textureKeys[i]] = os.path.join(textureDir_short, itemName).replace("\\", "/")
     
     jsonFilePath = textureDir.replace("textures", "models")
     jsonFilePath = os.path.join(jsonFilePath, jsonFileName)
     with open(jsonFilePath, "w") as write_file:
         json.dump(modelData, write_file)
         print("Successfully saved " + jsonFilePath)
+
+def createEntry(filePath, isBlock, isHat):
+    with open(filePath, "a") as write_file:
+        name = input("What would you like to name this item?")
+        write_file.write('\n' + "  " + name + ": ")
+        write_file.write('\n' + "  display_name: display-name-" + name)
+        write_file.write('\n' + "  permission: animecraft")
+        write_file.write('\n' + "  resource:")
+        write_file.write('\n' + "  material: PAPER")
+        write_file.write('\n' + "  generate: false")
+        write_file.write('\n' + "  model_path: false")
+        if isBlock=="block":
+            print()
+        else:
+            print()
+
+def splitModelPath(modelPath):
+    
+    return ""
     
 
 
@@ -147,19 +168,26 @@ print("Welcome to ItemsAdder Resource Pack Importer v2")
 
 
 while running:
-    valid, modelPath, pasteJSONLoc, pasteTextureLoc = grabInput(namespace)
+    valid, modelPath, pasteJSONLoc, pasteTextureLoc, isBlock, isHat = grabInput(namespace)
     if not valid: 
         print("Input invalid!")
         continue
 
     #print(modelPath)
-    #print(pasteJSONLoc)
+    print(pasteJSONLoc)
     #print(pasteTextureLoc)
 
     textureKeys, texturePaths, modelData = parseJSON(modelPath)
 
     textureDir = os.path.join(namespace, "textures", pasteTextureLoc)
     copyTextures(texturePaths, textureDir, textureKeys, modelData, pasteTextureLoc, os.path.basename(modelPath))
+
+    createEntry("items.yml", isBlock, isHat)
+
+    
+
+    
+
 
 
 
