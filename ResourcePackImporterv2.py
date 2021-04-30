@@ -114,7 +114,7 @@ def grabInput(namespace):
     pasteJSONLoc = os.path.join(namespace, "models", isBlock, isHat, jsonFile)
     return True, modelPath, pasteJSONLoc, pasteTextureLoc, isBlock, isHat
     
-def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_short, jsonFileName):
+def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_short, jsonFileName, namespace):
     for i in range(len(texturePaths)):
         temp = texturePaths[i]
         itemName = os.path.basename(temp)
@@ -122,7 +122,7 @@ def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_sh
 
         if(os.path.exists(temp)):
             copy(temp, textureDir)
-            modelData["textures"][textureKeys[i]] = os.path.join(textureDir_short, itemName).replace("\\", "/")
+            modelData["textures"][textureKeys[i]] =  namespace + ":" + os.path.join(textureDir_short, itemName).replace("\\", "/")
             print("Sucessfully copied " + temp)
         else:
             print("ERROR: CANNOT FIND TEXTURE " + temp + " FROM ORIGINAL FILES!")
@@ -142,7 +142,7 @@ def copyTextures(texturePaths, textureDir, textureKeys, modelData, textureDir_sh
 def createEntry(filePath, isBlock, isHat, jsonModelPath):
     with open(filePath, "a") as write_file:
         name = input("What would you like to name this item?")
-        write_file.write('\n' + "  " + name + ": ")
+        write_file.write('\n' + "  " + name + ":")
         write_file.write('\n' + "    display_name: display-name-" + name)
         write_file.write('\n' + "    lore:")
         for i in range(5):
@@ -151,7 +151,7 @@ def createEntry(filePath, isBlock, isHat, jsonModelPath):
         write_file.write('\n' + "    resource:")
         write_file.write('\n' + "      material: PAPER")
         write_file.write('\n' + "      generate: false")
-        write_file.write('\n' + "      model_path: " + jsonModelPath)
+        write_file.write('\n' + "      model_path: " + jsonModelPath[:-5].replace("\\", "/"))
         if isHat=="hats":
             write_file.write('\n' + "    behaviours:")
             write_file.write('\n' + "      hat: true")
@@ -208,7 +208,7 @@ while running:
     textureKeys, texturePaths, modelData = parseJSON(modelPath)
 
     textureDir = os.path.join(namespace, "textures", pasteTextureLoc)
-    copyTextures(texturePaths, textureDir, textureKeys, modelData, pasteTextureLoc, os.path.basename(modelPath))
+    copyTextures(texturePaths, textureDir, textureKeys, modelData, pasteTextureLoc, os.path.basename(modelPath), namespace)
 
     jsonModelPath = splitall(pasteJSONLoc)
 

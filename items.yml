@@ -32,3 +32,16 @@
       model_path: item\hats\torch.json
     behaviours:
       hat: true
+  op: 
+    display_name: display-name-op
+    lore:
+    - 'lore-1-op'
+    - 'lore-2-op'
+    - 'lore-3-op'
+    - 'lore-4-op'
+    - 'lore-5-op'
+    permission: animecraft
+    resource:
+      material: PAPER
+      generate: false
+      model_path: item\handheld\bow.json
